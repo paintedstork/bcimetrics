@@ -6,13 +6,13 @@ library (tidyverse)
 library (lubridate)
 library (data.table)
 
-CurMonth <- 9
+CurMonth <- 12
 CurYear  <- 2021
 PrevYear <- CurYear - 1 
 
 # Keep the zip file in a direct one level up as data
 dir <- "..\\data\\"
-ebdfile <- "ebd_IN_prv_relSep-2021"
+ebdfile <- "ebd_IN_prv_relDec-2021"
 
 # List the interested columns
 preimp <-  c( "COMMON.NAME",
@@ -29,7 +29,7 @@ preimp <-  c( "COMMON.NAME",
 
 
 #Incase the unzip is not done, uncomment this line
-#unzip(paste(dir, ebdfile,'.zip',sep=''))
+unzip(paste(dir, ebdfile,'.zip',sep=''))
 
 # Read the header plus first row
 nms <- read.delim( paste0 (ebdfile,".txt"),
@@ -141,6 +141,27 @@ county_coverage_stats <- ebd %>%
                 group_by (STATE.CODE, YEAR, MONTH) %>%
                 summarize ( coverage = round (100 * sum (covered) / states[states$STATE.CODE == STATE.CODE,]$Districts,0))
 
+
+districts <- ebd$COUNTY.CODE %>% unique() %>% as.data.frame()
+colnames(districts) <- c("COUNTY.CODE")
+
+district_obsv_stats <- ebd %>% 
+  group_by(COUNTY.CODE, YEAR, MONTH) %>%
+  summarize (count = n_distinct(COMMON.NAME, GROUP.ID)) %>%
+  ungroup 
+
+district_list_stats <- ebd %>% 
+  filter (ALL.SPECIES.REPORTED == 1) %>%
+  group_by(COUNTY.CODE, YEAR, MONTH) %>%
+  summarize (count = n_distinct(GROUP.ID)) %>%
+  ungroup 
+
+district_user_stats <- ebd %>%
+  group_by(COUNTY.CODE, YEAR, MONTH) %>%
+  summarize (count = n_distinct(OBSERVER.ID)) %>%
+  ungroup 
+
+
 ##################################################################
 accounting <- function (number)
 {
@@ -151,10 +172,14 @@ accounting <- function (number)
 
 source ("indiaMetrics.R")
 source ("stateMetrics.R")
+source ("districtMetrics.R")
 
 india_metrics <- genIndiaMetrics()
 state_metrics <- genStateMetrics()
+district_metrics <- genDistrictMetrics()
 
 write.csv2(india_metrics, "india_metrics.csv")
 
 write.csv2(state_metrics, "state_metrics.csv", row.names = FALSE)
+
+write.csv2(district_metrics, "district_metrics.csv", row.names = FALSE)
