@@ -65,8 +65,11 @@ genIndiaMetrics <- function ()
     addMetricRow(india_media_list_stats) %>%
     addMetricRow(india_user_stats) %>%
     addMetricRow(india_new_users_stats) %>%
-    addMetricRow(india_media_user_stats)
-
+    addMetricRow(india_media_user_stats) %>% 
+    addMetricRow(photo_stats) %>% 
+    addMetricRow(sound_stats) %>% 
+    addMetricRow(video_stats)
+    
   colnames(india_metrics) <- c (month.abb[Months], "YoY%")
   
   rownames(india_metrics) <- c ("Observations",
@@ -74,6 +77,9 @@ genIndiaMetrics <- function ()
                                 "Media Lists",
                                 "Users",
                                 "New Users",
-                                "Media Users")
+                                "Media Users",
+                                "Photos",
+                                "Sounds",
+                                "Videos")
   return (india_metrics)
 }

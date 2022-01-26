@@ -170,6 +170,19 @@ accounting <- function (number)
 #  return (ifelse (is.finite(number), ifelse (number >=0, paste0(number), paste0("(", -number, ")")),"_"))
 }
 
+
+photo_stats <<- 0
+sound_stats <<- 0
+video_stats <<- 0
+source ("mediaMlMetrics.R")
+
+pullMediaStats()
+ 
+# Move this to mediaMLMetrics later
+colnames (photo_stats) <- c ("YEAR", "MONTH", "count")
+colnames (sound_stats) <- c ("YEAR", "MONTH", "count")
+colnames (video_stats) <- c ("YEAR", "MONTH", "count")
+
 source ("indiaMetrics.R")
 source ("stateMetrics.R")
 source ("districtMetrics.R")
