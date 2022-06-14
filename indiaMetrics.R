@@ -2,11 +2,6 @@
 ############# Preparing the India (Country) level metrics########
 #################################################################
 
-# Last six months
-Months <- CurMonth:(CurMonth-5)
-
-# Last six months rolling over at Jan
-Months <- (Months - 1) %% 12 + 1
 
 ####Function that gets the metric for a month for the source dataframe
 getMetric <- function (source_df, month)
