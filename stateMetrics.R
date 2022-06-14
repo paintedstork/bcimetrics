@@ -90,33 +90,33 @@ genStateMetrics <- function ()
   
   state_metrics <- state_metrics %>% select (
                           STATE.CODE,
-                          Obsv_CurMCurY,
                           Obsv_PreMCurY,
+                          Obsv_CurMCurY,
                           Obsv_Trend,
-                          Lists_CurMCurY,
                           Lists_PreMCurY,
+                          Lists_CurMCurY,
                           Lists_Trend,
-                          Users_CurMCurY,
                           Users_PreMCurY,
+                          Users_CurMCurY,
                           Users_Trend,
-                          County_CurMCurY,
                           County_PreMCurY,
+                          County_CurMCurY,
                           County_Trend
   )
   
   colnames (state_metrics) <- c (
                                  "",
-                                 month.abb[CurMonth],
                                  month.abb[PrevMonth],
+                                 month.abb[CurMonth],
                                  "YoY%",
-                                 month.abb[CurMonth],
                                  month.abb[PrevMonth],
+                                 month.abb[CurMonth],
                                  "YoY%",
-                                 month.abb[CurMonth],
                                  month.abb[PrevMonth],
+                                 month.abb[CurMonth],
                                  "YoY%",
-                                 month.abb[CurMonth],
                                  month.abb[PrevMonth],
+                                 month.abb[CurMonth],
                                  "YoY%")
   state_metrics[is.na(state_metrics)] = 0
   return (state_metrics)
