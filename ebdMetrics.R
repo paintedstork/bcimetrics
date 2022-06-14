@@ -2,23 +2,44 @@
 ############# Script to create monthly metrics out of ebd########
 #################################################################
 
+#Rscript ebdMetrics.R 4 2022 ..\data\\ TRUE
+
 library (tidyverse)
 library (lubridate)
 library (data.table)
 
-CurMonth <- 12
-CurYear  <- 2021
+args <- commandArgs(trailingOnly = TRUE)
+
+CurMonth <- as.integer (args [1])
+CurYear  <- as.integer (args [2])
+dir <- args[3]
+unzip <-    as.logical (args [4])
+
+print (paste("Generating metrics for", month.abb[CurMonth], CurYear, "from", dir, "with unzip =", unzip))
+
+#CurMonth <- 4
+#CurYear  <- 2022
+# Keep the zip file in a direct one level up as data
+# dir <- "..\\data\\"
+#unzip <- 1
+
 PrevYear <- CurYear - 1 
 
-# Keep the zip file in a direct one level up as data
-dir <- "..\\data\\"
-ebdfile <- "ebd_IN_prv_relDec-2021"
+# Last six months
+Months <- (CurMonth-5):CurMonth
+
+# Last six months rolling over at Jan
+Months <- (Months - 1) %% 12 + 1
+
+
+ebdfile <- paste0("ebd_IN_prv_rel",month.abb[CurMonth],"-",CurYear)
 
 # List the interested columns
 preimp <-  c( "COMMON.NAME",
               "STATE.CODE",
               "COUNTY.CODE",
               "OBSERVATION.DATE",
+#              "OBSERVATION.COUNT",
               "OBSERVER.ID",
               "SAMPLING.EVENT.IDENTIFIER",
               "ALL.SPECIES.REPORTED",
@@ -29,7 +50,10 @@ preimp <-  c( "COMMON.NAME",
 
 
 #Incase the unzip is not done, uncomment this line
-unzip(paste(dir, ebdfile,'.zip',sep=''))
+if (unzip)
+{
+  unzip(paste(dir, ebdfile,'.zip',sep=''))
+}
 
 # Read the header plus first row
 nms <- read.delim( paste0 (ebdfile,".txt"),
