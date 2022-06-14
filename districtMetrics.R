@@ -74,27 +74,27 @@ genDistrictMetrics <- function ()
   
   district_metrics <- district_metrics %>% select (
                           COUNTY.CODE,
-                          Obsv_CurMCurY,
                           Obsv_PreMCurY,
+                          Obsv_CurMCurY,
                           Obsv_Trend,
-                          Lists_CurMCurY,
                           Lists_PreMCurY,
+                          Lists_CurMCurY,
                           Lists_Trend,
-                          Users_CurMCurY,
                           Users_PreMCurY,
+                          Users_CurMCurY,
                           Users_Trend
   )
   
   colnames (district_metrics) <- c (
                                  "",
-                                 month.abb[CurMonth],
                                  month.abb[PrevMonth],
+                                 month.abb[CurMonth],
                                  "YoY%",
-                                 month.abb[CurMonth],
                                  month.abb[PrevMonth],
+                                 month.abb[CurMonth],
                                  "YoY%",
-                                 month.abb[CurMonth],
                                  month.abb[PrevMonth],
+                                 month.abb[CurMonth],
                                  "YoY%")
   district_metrics[is.na(district_metrics)] = 0
   return (district_metrics)
